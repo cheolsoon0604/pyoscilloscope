@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OscilloscopeGUI</class>
+ <widget class="QMainWindow" name="OscilloscopeGUI">
+  <property name="geometry">
+   <rect>
+    <x>100</x>
+    <y>100</y>
+    <width>600</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>오실로스코프 제어</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+
+    <!-- 연결 설정 그룹박스 -->
+    <item>
+     <widget class="QGroupBox" name="connectionGroup">
+      <property name="title">
+       <string>연결 설정</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+
+       <!-- VISA 주소 콤보박스 -->
+       <item>
+        <widget class="QComboBox" name="visaAddressCombo">
+         <property name="placeholderText">
+          <string>VISA 주소 선택</string>
+         </property>
+        </widget>
+       </item>
+
+       <!-- 연결 버튼 -->
+       <item>
+        <widget class="QPushButton" name="connectButton">
+         <property name="text">
+          <string>연결</string>
+         </property>
+        </widget>
+       </item>
+
+       <!-- 상태 라벨 -->
+       <item>
+        <widget class="QLabel" name="statusLabel">
+         <property name="text">
+          <string>상태: 연결되지 않음</string>
+         </property>
+        </widget>
+       </item>
+
+      </layout>
+     </widget>
+    </item>
+
+    <!-- 데이터 수집 및 처리 그룹박스 -->
+    <item>
+     <widget class="QGroupBox" name="acquisitionGroup">
+      <property name="title">
+       <string>데이터 수집 및 처리</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+
+       <!-- 데이터 수집 버튼 -->
+       <item>
+        <widget class="QPushButton" name="acquireButton">
+         <property name="text">
+          <string>데이터 수집</string>
+         </property>
+        </widget>
+       </item>
+
+       <!-- FFT 수행 버튼 -->
+       <item>
+        <widget class="QPushButton" name="fftButton">
+         <property name="text">
+          <string>FFT 수행</string>
+         </property>
+        </widget>
+       </item>
+
+       <!-- 신호 플로팅 버튼 -->
+       <item>
+        <widget class="QPushButton" name="plotButton">
+         <property name="text">
+          <string>신호 플로팅</string>
+         </property>
+        </widget>
+       </item>
+
+       <!-- 진행 바 -->
+       <item>
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+
+      </layout>
+     </widget>
+    </item>
+
+    <!-- 종료 그룹박스 -->
+    <item>
+     <widget class="QGroupBox" name="controlGroup">
+      <property name="title">
+       <string>종료</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+
+       <!-- 종료 버튼 -->
+       <item>
+        <widget class="QPushButton" name="quitButton">
+         <property name="text">
+          <string>종료</string>
+         </property>
+        </widget>
+       </item>
+
+      </layout>
+     </widget>
+    </item>
+
+   </layout>
+  </widget>
+ </widget>
+</ui>
