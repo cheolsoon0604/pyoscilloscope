@@ -21,7 +21,7 @@ The **Oscilloscope Control and Data Analysis Application** is a Python-based GUI
 
 Something will be written here
 
-## Prerequisites
+## Requirements
 
 Before installing and running the application, ensure that the following software and hardware requirements are met:
 
