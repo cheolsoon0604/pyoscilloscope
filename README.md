@@ -1,17 +1,18 @@
-# Oscilloscope Control and Data Analysis Application
+# PyOscilloscope 
+Oscilloscope Control and Data Analysis Application
 
-※ This project is still on development ※
-※ 아직 개발이 진행중인 프로젝트 입니다. ※
+※ This project is still on development ※  
+※ 아직 개발중인 프로젝트 입니다. ※
 
 Python based GUI program for Tektronix MDO4024C Oscilloscope
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
+- [Introduction](#Introduction)
+- [Features](#Features)
+- [Requirements](#Requirements)
+- [Installation](#Installation)
+- [Usage](#Usage)
 
 ## Introduction
 
