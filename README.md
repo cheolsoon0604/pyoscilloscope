@@ -49,8 +49,7 @@ Follow these steps to set up the application on your system:
 
 1. **Clone the Repository**
 
-        git clone https://github.com/yourusername/oscilloscope-app.git
-        cd oscilloscope-app
+        git clone https://github.com/cheolsoon0604/pyoscilloscope.git
 
 2. Set Up a Virtual Environment (Optional but Recommended)
 
