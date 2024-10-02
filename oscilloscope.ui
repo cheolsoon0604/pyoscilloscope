@@ -6,48 +6,125 @@
    <rect>
     <x>100</x>
     <y>100</y>
-    <width>600</width>
-    <height>500</height>
+    <width>1600</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>오실로스코프 제어</string>
+   <string>PyOscilloscope</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
 
-    <!-- 연결 설정 그룹박스 -->
+    <!-- 연결 및 설정 패널 -->
     <item>
-     <widget class="QGroupBox" name="connectionGroup">
+     <widget class="QGroupBox" name="settingsGroup">
       <property name="title">
-       <string>연결 설정</string>
+       <string>연결 설정 및 제어</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_settings">
 
-       <!-- VISA 주소 콤보박스 -->
+       <!-- 연결 설정 그룹 -->
        <item>
-        <widget class="QComboBox" name="visaAddressCombo">
-         <property name="placeholderText">
-          <string>VISA 주소 선택</string>
+        <layout class="QVBoxLayout" name="verticalLayout_connection">
+         <item>
+          <widget class="QComboBox" name="visaAddressCombo">
+           <property name="placeholderText">
+            <string>VISA 주소 선택</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="connectButton">
+           <property name="text">
+            <string>연결</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="statusLabel">
+           <property name="text">
+            <string>상태: 연결되지 않음</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+
+       <!-- 데이터 수집 및 처리 그룹 -->
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_acquisition">
+         <item>
+          <widget class="QPushButton" name="acquireButton">
+           <property name="text">
+            <string>데이터 수집</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="rmsSelectionGroup">
+         <property name="title">
+          <string>RMS 유형 선택</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_rmsSelection">
+          <item>
+           <widget class="QRadioButton" name="linearRMSRadio">
+            <property name="text">
+             <string>Linear RMS</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="dBVRadio">
+            <property name="text">
+             <string>dBV RMS</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <!-- 그래프 영역 -->
+    <item>
+     <widget class="QWidget" name="graphWidget">
+      <layout class="QVBoxLayout" name="verticalLayout_graphs">
+
+       <!-- 시간 도메인 그래프 -->
+       <item>
+        <widget class="QGroupBox" name="timeDomainGroup">
+         <property name="title">
+          <string>시간 도메인 그래프</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_timeDomain">
+          <item>
+           <widget class="QWidget" name="timeDomainPlot" native="true">
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
 
-       <!-- 연결 버튼 -->
+       <!-- 주파수 도메인 그래프 -->
        <item>
-        <widget class="QPushButton" name="connectButton">
-         <property name="text">
-          <string>연결</string>
+        <widget class="QGroupBox" name="frequencyDomainGroup">
+         <property name="title">
+          <string>주파수 도메인 그래프</string>
          </property>
-        </widget>
-       </item>
-
-       <!-- 상태 라벨 -->
-       <item>
-        <widget class="QLabel" name="statusLabel">
-         <property name="text">
-          <string>상태: 연결되지 않음</string>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_frequencyDomain">
+          <item>
+           <widget class="QWidget" name="frequencyDomainPlot" native="true">
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
 
@@ -55,63 +132,32 @@
      </widget>
     </item>
 
-    <!-- 데이터 수집 및 처리 그룹박스 -->
+
+    <!-- 현재 시간 그룹박스 -->
     <item>
-     <widget class="QGroupBox" name="acquisitionGroup">
+     <widget class="QGroupBox" name="timeDisplayGroup">
       <property name="title">
-       <string>데이터 수집 및 처리</string>
+       <string>현재 시간</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-
-       <!-- 데이터 수집 버튼 -->
+      <layout class="QVBoxLayout" name="verticalLayout_timeDisplay">
        <item>
-        <widget class="QPushButton" name="acquireButton">
+        <widget class="QLabel" name="currentTimeLabel">
          <property name="text">
-          <string>데이터 수집</string>
+          <string>00:00:00</string>
          </property>
         </widget>
        </item>
-
-       <!-- FFT 수행 버튼 -->
-       <item>
-        <widget class="QPushButton" name="fftButton">
-         <property name="text">
-          <string>FFT 수행</string>
-         </property>
-        </widget>
-       </item>
-
-       <!-- 신호 플로팅 버튼 -->
-       <item>
-        <widget class="QPushButton" name="plotButton">
-         <property name="text">
-          <string>신호 플로팅</string>
-         </property>
-        </widget>
-       </item>
-
-       <!-- 진행 바 -->
-       <item>
-        <widget class="QProgressBar" name="progressBar">
-         <property name="value">
-          <number>0</number>
-         </property>
-        </widget>
-       </item>
-
       </layout>
      </widget>
     </item>
 
-    <!-- 종료 그룹박스 -->
+    <!-- 종료 버튼 그룹박스 -->
     <item>
      <widget class="QGroupBox" name="controlGroup">
       <property name="title">
        <string>종료</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-
-       <!-- 종료 버튼 -->
+      <layout class="QVBoxLayout" name="verticalLayout_control">
        <item>
         <widget class="QPushButton" name="quitButton">
          <property name="text">
@@ -119,7 +165,6 @@
          </property>
         </widget>
        </item>
-
       </layout>
      </widget>
     </item>
