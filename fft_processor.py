@@ -5,16 +5,17 @@ from PyQt5.QtWidgets import QMessageBox
 class FFTProcessor:
     def __init__(self):
         self.fft_result = None
+        self.fft_freq = None
         self.positive_freqs = None
         self.magnitude = None
 
-    def perform_fft(self, time_scale, wave_data, use_dBV=False):
+    def perform_fft(self, time_scale, wave_data, use_dbv):
         """FFT를 수행하고 결과를 저장합니다.
 
         Parameters:
             time_scale: 데이터의 시간 간격
             wave_data: 시간 도메인에서의 데이터
-            use_dBV: dBV RMS를 사용할지 여부
+            use_dbv: vertical scale 설정
         """
         try:
             record = len(wave_data)
@@ -26,7 +27,7 @@ class FFTProcessor:
             # 양의 주파수와 크기 계산
             self.positive_freqs = self.fft_freq[:record // 2]
 
-            if use_dBV:
+            if use_dbv:
                 # dBV RMS 계산
                 self.magnitude = 20 * np.log10(np.abs(self.fft_result/10)[:record // 2])
             else:
