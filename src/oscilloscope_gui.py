@@ -3,8 +3,8 @@ import pyvisa as visa
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from oscilloscope import Oscilloscope
-from fft_processor import FFTProcessor
+from src.oscilloscope import Oscilloscope
+from src.fft_processor import FFTProcessor
 import pyqtgraph as pg
 import numpy as np
 from datetime import datetime
@@ -14,7 +14,7 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
-        uic.loadUi('oscilloscope.ui', self)
+        uic.loadUi('src/oscilloscope.ui', self)
         # uic.loadUi('test.ui', self)
 
         self.oscilloscope = None
@@ -326,7 +326,7 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
         except ValueError as e:
             QMessageBox.critical(self, "Plotting Error", str(e))
         except Exception as e:
-            QMessageBox.critical(self, "Unexpected Error", f"오류 발생: {str(e)}")
+            QMessageBox.critical(self, "Unexpected Error", f"Plotting Error: {str(e)}")
 
     def on_fft_triggered(self, checked):
         if checked:
@@ -353,11 +353,3 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
     # --------------------------------------------------- Time stamp ------------------------------------------------- #
     def return_time_stamp(self):
         return datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = OscilloscopeGUI()
-    window.connection_populate_visa_addresses()
-    window.setWindowTitle("Oscilloscope GUI")  # 창 제목 설정
-    window.show()
-    sys.exit(app.exec_())
