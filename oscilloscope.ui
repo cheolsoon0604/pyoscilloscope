@@ -20,9 +20,9 @@
       <property name="title">
        <string>Results</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_results">
+      <layout class="QVBoxLayout" name="results_graphics_view_layout">
        <item>
-        <widget class="QGraphicsView" name="graphicsView"/>
+        <widget class="QWidget" name="results_graphics_widget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -57,7 +57,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="iconSize">
        <size>
@@ -99,6 +99,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="connection_connect_button">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
              <property name="text">
               <string>Connect</string>
              </property>
@@ -108,7 +111,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="connect_devide_name_label">
+         <widget class="QLabel" name="connect_device_name_label">
           <property name="text">
            <string>Device:</string>
           </property>
@@ -297,11 +300,21 @@
              </item>
             </widget>
            </item>
+           <item>
+            <widget class="QPushButton" name="control_autoset">
+             <property name="text">
+              <string>AutoSet</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="control_single">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>1</horstretch>
@@ -315,6 +328,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="control_run_stop">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>1</horstretch>
@@ -323,19 +339,6 @@
           </property>
           <property name="text">
            <string>Run / Stop</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="control_capture_display">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Capture Display</string>
           </property>
          </widget>
         </item>
@@ -412,7 +415,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QComboBox" name="math_channel_select_source1_combobox_2">
+            <widget class="QComboBox" name="math_channel_select_source2_combobox">
              <item>
               <property name="text">
                <string>Channel 1</string>
@@ -485,7 +488,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="math_function_devide">
+            <widget class="QCheckBox" name="math_function_divide">
              <property name="text">
               <string>Divide</string>
              </property>
@@ -684,9 +687,9 @@
       <property name="title">
        <string>Time Domain Data</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_graph">
+      <layout class="QVBoxLayout" name="time_domain_data_graph_layout">
        <item>
-        <widget class="QGraphicsView" name="time_domain_data_graphics_view"/>
+        <widget class="QWidget" name="time_domain_data_graphics_widget" native="true"/>
        </item>
       </layout>
      </widget>
