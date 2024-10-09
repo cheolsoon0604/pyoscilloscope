@@ -72,16 +72,19 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
         self.math_function_divide.stateChanged.connect(lambda: self.math_operation_function('divide', self.math_function_divide.isChecked()))
 
         # Plots
-        self.time_domain_data_graphics_view = pg.PlotWidget()
-        self.timeLayout = QVBoxLayout(self.time_domain_data_graphics_widget)
-        self.timeLayout.addWidget(self.time_domain_data_graphics_view)
-
-        '''
-        self.result_graphics_view = pg.PlotWidget()
-        self.resultLayout = QVBoxLayout(self.results_graphics_widget)
-        self.resultLayout.addWidget(self.result_graphics_view)'''
+        self.graph = pg.PlotWidget()
+        self.graphLayout = QtWidgets.QVBoxLayout(self.graph_widget)
+        self.graphLayout.addWidget(self.graph)
 
         self.plots_initialize()
+
+        # PlotWidget의 PlotItem에 접근
+        self.plot_item = self.graph.getPlotItem()
+
+        # context menu 감지 연결
+        self.plot_item.ctrlMenu.menuAction().triggered.connect(self.onContextMenuEvent)
+        self.graph.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.graph.customContextMenuRequested.connect(self.onContextMenuEvent)
 
         self.color_dictionary = {
             1: "y",
@@ -95,6 +98,13 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
             'subtract': None,
             'multiply': None,
             'divide': None
+        }
+
+        self.math_plot_color_dictionary = {
+            'add': 'c',
+            'subtract': 'm',
+            'multiply': 'k',
+            'divide': 'w'
         }
 
         # Toolbar
@@ -191,7 +201,7 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
             try:
                 self.oscilloscope.acquire_data(self.channel_selected)
                 self.plot_time_domain_signals()
-                print(self.return_time_stamp())
+                # print(self.return_time_stamp())   # for Debug
             except Exception as e:
                 self.is_acquiring = False
                 QMessageBox.critical(self, "Data Aquiration Error", str(e))
@@ -222,16 +232,16 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
     def plots_initialize(self):
         """그래프에 기본 제목과 레이블을 설정합니다."""
         # 시간 도메인 그래프 초기 설정
-        self.time_domain_data_graphics_view.clear()
-        self.time_domain_data_graphics_view.setTitle("Time Domain Signal")
-        self.time_domain_data_graphics_view.setLabel('left', 'Voltage (V)')
-        self.time_domain_data_graphics_view.setLabel('bottom', 'Time (ms)')
-        self.time_domain_data_graphics_view.showGrid(x=True, y=True)
+        self.graph.clear()
+        self.graph.setTitle("Time Domain Signal")
+        self.graph.setLabel('left', 'Voltage (V)')
+        self.graph.setLabel('bottom', 'Time (ms)')
+        self.graph.showGrid(x=True, y=True)
 
-        view_box = self.time_domain_data_graphics_view.getViewBox()
+        view_box = self.graph.getViewBox()
         view_box.setMouseMode(view_box.PanMode)
-        # self.time_domain_data_graphics_view.enableAutoRange()
-        self.time_domain_data_graphics_view.addLegend()
+        # self.graph.enableAutoRange()
+        self.graph.addLegend()
 
         '''
         # 결과 그래프 초기 설정
@@ -245,13 +255,13 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
     def plot_time_domain_signals(self):  # 수집된 신호 플로팅 함수
         try:
             if self.oscilloscope:
-                self.time_domain_data_graphics_view.clear()
+                self.graph.clear()
                 for channel in self.channel_selected:
                     if self.channel_selected[channel]:
-                        self.time_domain_data_graphics_view.plot(self.oscilloscope.scaled_time[channel],
-                                                                 self.oscilloscope.scaled_wave[channel],
-                                                                 pen=self.color_dictionary[channel],
-                                                                 name=f"Channel{channel}")
+                        self.graph.plot(self.oscilloscope.scaled_time[channel],
+                                        self.oscilloscope.scaled_wave[channel],
+                                        pen=self.color_dictionary[channel],
+                                        name=f"Channel{channel}")
 
                 for func in self.math_is_running:
                     if self.math_is_running[func]:
@@ -276,39 +286,61 @@ class OscilloscopeGUI(QtWidgets.QMainWindow):
                     result_wave = operations[operation_type]['func'](self.oscilloscope.scaled_wave[self.math_source1], self.oscilloscope.scaled_wave[self.math_source2])
                     plot_name = f"Source{self.math_source1} {operations[operation_type]['label']} Source{self.math_source2}"
                     time_data = self.oscilloscope.scaled_time[self.math_source1]
-                    self.math_plot[operation_type] = self.time_domain_data_graphics_view.plot(time_data, result_wave, pen='r', name=plot_name)
+                    self.math_plot[operation_type] = self.graph.plot(time_data, result_wave, pen=self.math_plot_color_dictionary[operation_type], name=plot_name)
 
         except Exception as e:
             QMessageBox.critical(self, "Plotting Error", str(e))
 
     def plot_math_operation_remove(self, operation_type):
         try:
-            self.time_domain_data_graphics_view.removeItem(self.math_plot[operation_type])
+            self.graph.removeItem(self.math_plot[operation_type])
         except Exception as e:
             QMessageBox.critical(self, "Plotting Error", str(e))
 
-    '''def update_measurement_results(self, measurement_type, result):
-        """측정 결과를 테이블에 업데이트합니다."""
-        row_position = self.resultsTable.rowCount()
-        self.resultsTable.insertRow(row_position)
-        self.resultsTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(measurement_type))
-        self.resultsTable.setItem(row_position, 1, QtWidgets.QTableWidgetItem(str(result)))'''
+    from PyQt5.QtWidgets import QMessageBox, QCheckBox
 
-    '''
-                    self.time_domain_data_graphics_view.setTitle("Time Domain Signal")
-                    self.time_domain_data_graphics_view.setLabel('left', 'Voltage (V)')
-                    self.time_domain_data_graphics_view.setLabel('bottom', 'Time (ms)')'''
-    '''
-    use_dbv = self.dBVRadio.isChecked()
-    self.fft_processor.perform_fft(self.oscilloscope.tscale, self.oscilloscope.scaled_wave, use_dbv)
-    freq_domain, magnitude = self.fft_processor.get_results()
+    def onContextMenuEvent(self):
+        try:
+            menu = self.plot_item.ctrlMenu
+            transforms_action = next((action for action in menu.actions() if action.text() == "Transforms"), None)
 
-    self.freqPlotWidget.clear()
-    self.freqPlotWidget.plot(freq_domain, magnitude, pen='r', name='FFT')
-    self.freqPlotWidget.addLegend()
-    self.freqPlotWidget.setTitle("Frequency Domain Signal")
-    self.freqPlotWidget.setLabel('left', 'dBV RMS (mV)' if use_dbv else 'Linear RMS (mV)')
-    self.freqPlotWidget.setLabel('bottom', 'Frequency (Hz)')'''
+            if transforms_action:
+                transforms_menu = transforms_action.menu()
+
+                for action in transforms_menu.actions():
+                    if isinstance(action, QtWidgets.QWidgetAction):
+                        widget = action.defaultWidget()
+                        if widget is not None:
+                            checkboxes = widget.findChildren(QCheckBox)
+                            found_checkbox = False  # 체크박스 발견 여부 플래그
+                            for checkbox in checkboxes:
+                                if checkbox.text() == "Power Spectrum (FFT)":
+                                    checkbox.toggled.connect(self.on_fft_triggered)
+                                    found_checkbox = True  # 체크박스를 찾았음을 표시
+                                    break
+                            if not found_checkbox:
+                                raise ValueError("Power Spectrum (FFT) 체크박스를 찾을 수 없습니다.")
+            else:
+                raise ValueError("Transforms 메뉴를 찾을 수 없습니다.")
+
+        except ValueError as e:
+            QMessageBox.critical(self, "Plotting Error", str(e))
+        except Exception as e:
+            QMessageBox.critical(self, "Unexpected Error", f"오류 발생: {str(e)}")
+
+    def on_fft_triggered(self, checked):
+        if checked:
+            self.graph.clear()
+            self.graph.setTitle("Frequency Domain Signal")
+            self.graph.setLabel('left', 'magnitude (V)')
+            self.graph.setLabel('bottom', 'Frequency (kHz)')
+            self.graph.showGrid(x=True, y=True)
+        else:
+            self.graph.clear()
+            self.graph.setTitle("Time Domain Signal")
+            self.graph.setLabel('left', 'Voltage (V)')
+            self.graph.setLabel('bottom', 'Time (ms)')
+            self.graph.showGrid(x=True, y=True)
 
     # ---------------------------------------------------- Tool bar -------------------------------------------------- #
     def close(self):

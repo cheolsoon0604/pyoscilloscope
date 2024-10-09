@@ -1,4 +1,6 @@
-NanumGothic.ttf
-temp.py
 .venv/
 .idea/
+.git/
+__pycache/
+test.ui
+temp.py
